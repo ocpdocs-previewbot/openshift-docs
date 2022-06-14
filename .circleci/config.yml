@@ -17,7 +17,7 @@ jobs:
       - checkout
       - run:
           name: Push branch
-          command: ./scripts/push_to_netlify.sh
+          command: chmod +x scripts/push_to_netlify.sh && ./scripts/push_to_netlify.sh
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
