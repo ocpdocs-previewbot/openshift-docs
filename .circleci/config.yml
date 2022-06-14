@@ -12,16 +12,12 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/ruby:3.1.0
-    executor: ruby/default
+      - image: cimg/base:2020.01
     steps:
       - checkout
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - run:
-          name: GEM Install
-          command: gem install && asciibinder build
+          name: Push branch
+          command: ./scripts/push_to_netlify.sh
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
