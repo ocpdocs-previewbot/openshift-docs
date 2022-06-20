@@ -7,7 +7,7 @@
 [id="machine-delete_{context}"]
 = Deleting a specific machine
 
-You can delete a specific machine.
+You can delete a specific machine but it is important to note that you can not delete a control plane machine.  
 
 .Prerequisites
 
