@@ -25,6 +25,10 @@ function do_preview() {
     git config --global user.email "circleci@circleci.com"
     git config --global user.name "Circle CI"
 
+    echo -e "${YELLOW}==== RESETTING REMOTES ====${NC}"
+    git remote rm origin
+    git remote add origin https://"${GH_TOKEN}"@github.com/openshift-docs-preview-bot/openshift-docs.git > /dev/null 2>&1
+
     #set the remote to user repository
     echo -e "${YELLOW}==== SETTING REMOTE FOR ${BLUE}$REPO_NAME:$PR_BRANCH${YELLOW} ====${NC}"
     git remote add userrepo https://github.com/"$REPO_NAME".git
