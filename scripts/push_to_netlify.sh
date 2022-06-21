@@ -48,6 +48,14 @@ function do_preview() {
 
     echo -e "${YELLOW}==== CHANGING NAME OF THE BRANCH ====${NC}"
     git branch -m "$PR_NUMBER"
+    
+    echo -e "${YELLOW}==== CHANGING NETLIFY.TOML ====${NC}"
+    curl -O https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/netlify.toml
+    
+    #commit changes
+    echo -e "${YELLOW}==== COMMITTING CHANGES FOR NETLIFY.TOML ====${NC}"
+    git add .
+    git commit -m "Updated netlify.toml for #$PR_NUMBER"
 
     echo -e "${YELLOW}==== PUSHING TO GITHUB ====${NC}"
     git push origin -f "$PR_NUMBER" --quiet
