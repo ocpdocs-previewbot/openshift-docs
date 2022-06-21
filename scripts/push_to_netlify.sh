@@ -8,7 +8,6 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 
 function do_preview() {
-    echo -e "${BLUE}==== available variables ====${NC}"
     echo -e "${BLUE}==== PR_BRANCH ====${NC}"
     echo -e "${GREEN}$PR_BRANCH${NC}"
     echo -e "${BLUE}==== BASE_REPO ====${NC}"
@@ -30,11 +29,7 @@ function do_preview() {
     echo -e "${YELLOW}==== SETTING REMOTE FOR ${BLUE}$REPO_NAME:$PR_BRANCH${YELLOW} ====${NC}"
     git remote add userrepo https://github.com/"$REPO_NAME".git
 
-    #add branch to remote
-    echo -e "${YELLOW}==== SETTING REMOTE BRANCH TRACKING ====${NC}"
-    git remote set-branches --add userrepo "$PR_BRANCH"
-
-    #fetch updated changes
+    #fetch user branch
     echo -e "${YELLOW}==== FETCHNING the BRANCH ${BLUE}$PR_BRANCH ====${NC}"
     git fetch userrepo "$PR_BRANCH"
 
