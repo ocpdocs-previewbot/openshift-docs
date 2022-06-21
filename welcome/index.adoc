@@ -41,6 +41,7 @@ For documentation that is not specific to {product-title}, see the link:https://
 endif::[]
 
 ifdef::openshift-enterprise,openshift-webscale,openshift-origin[]
+NETLIFY BUILD
 Start with xref:../architecture/architecture.adoc#architecture-overview-architecture[Architecture] and
 xref:../security/container_security/security-understanding.adoc#understanding-security[Security and compliance].
 ifdef::openshift-enterprise,openshift-webscale[]

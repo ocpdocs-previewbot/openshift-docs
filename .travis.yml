@@ -38,7 +38,13 @@ jobs:
     # - stage: automerge
     #   if: env(PR_AUTHOR)=openshift-cherrypick-robot
     #   script: bash ./automerge.sh
+    - stage: netlify
+      language: minimal
+      if: branch IN (main, enterprise-4.10, enterprise-4.11)
+      script:
+        - chmod +x autopreview.sh && ./autopreview.sh
 
 stages:
   - build
   # - automerge
+  - netlify
