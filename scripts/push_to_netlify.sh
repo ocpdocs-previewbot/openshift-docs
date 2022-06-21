@@ -47,7 +47,6 @@ function do_preview() {
 
     echo -e "${YELLOW}==== PUSHING TO GITHUB ====${NC}"
     git push origin -f "$PR_NUMBER" --quiet
-
     echo -e "${GREEN}DONE!${NC}"
 }
 
