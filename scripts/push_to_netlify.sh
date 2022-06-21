@@ -40,7 +40,7 @@ function do_preview() {
     #commit changes
     echo -e "${YELLOW}==== COMMITTING CHANGES ====${NC}"
     git add .
-    git commit -m "Preview for PR #$PR_NUMBER"
+    git commit -m "Preview for PR"
 
     #checkout branch
     echo -e "${YELLOW}==== Checking out ${BLUE}$PR_BRANCH ====${NC}"
@@ -55,7 +55,7 @@ function do_preview() {
     #commit changes
     echo -e "${YELLOW}==== COMMITTING CHANGES FOR NETLIFY.TOML ====${NC}"
     git add .
-    git commit -m "Updated netlify.toml for #$PR_NUMBER"
+    git commit -m "Updated netlify.toml for PR"
 
     echo -e "${YELLOW}==== PUSHING TO GITHUB ====${NC}"
     git push origin -f "$PR_NUMBER" --quiet
