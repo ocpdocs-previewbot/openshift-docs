@@ -27,7 +27,7 @@ function do_preview() {
 
     echo -e "${YELLOW}==== RESETTING REMOTES ====${NC}"
     git remote rm origin
-    git remote add origin https://"${GH_TOKEN}"@github.com/openshift-docs-preview-bot/openshift-docs.git > /dev/null 2>&1
+    git remote add origin https://"${GH_TOKEN}"@github.com/ocpdocs-previewbot/openshift-docs.git > /dev/null 2>&1
 
     #set the remote to user repository
     echo -e "${YELLOW}==== SETTING REMOTE FOR ${BLUE}$REPO_NAME:$PR_BRANCH${YELLOW} ====${NC}"
