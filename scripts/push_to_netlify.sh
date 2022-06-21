@@ -46,16 +46,14 @@ function do_preview() {
     git branch -m "$PR_NUMBER"
 
     echo -e "${YELLOW}==== PUSHING TO GITHUB ====${NC}"
-    git push origin -f "$PR_BRANCH" --quiet
-
+    git push origin -f "$PR_NUMBER" --quiet
     echo -e "${GREEN}DONE!${NC}"
-
 }
 
 # check if PR_NUMBER variable is set else run git clone
 if [ -z "$PR_NUMBER" ]; then
     echo -e "${YELLOW}==== PR_NUMBER is not set, exiting... ====${NC}"
-    exit 1
+    circleci-agent step halt
 else
     echo -e "${YELLOW}==== PR_NUMBER is set, running for preview ====${NC}"
     do_preview
