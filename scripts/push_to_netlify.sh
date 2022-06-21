@@ -29,9 +29,14 @@ function do_preview() {
     echo -e "${YELLOW}==== SETTING REMOTE FOR ${BLUE}$REPO_NAME:$PR_BRANCH${YELLOW} ====${NC}"
     git remote add userrepo https://github.com/"$REPO_NAME".git
 
-    #fetch updated changes
+    #fetch user branch
     echo -e "${YELLOW}==== FETCHNING the BRANCH ${BLUE}$PR_BRANCH ====${NC}"
     git fetch userrepo "$PR_BRANCH"
+
+    #commit changes
+    echo -e "${YELLOW}==== COMMITTING CHANGES ====${NC}"
+    git add .
+    git commit -m "Preview for PR #$PR_NUMBER"
 
     #checkout branch
     echo -e "${YELLOW}==== Checking out ${BLUE}$PR_BRANCH ====${NC}"
