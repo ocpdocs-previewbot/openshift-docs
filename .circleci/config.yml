@@ -1,4 +1,5 @@
 --- 
+--- 
 jobs: 
   build: 
     machine: true
@@ -18,29 +19,33 @@ jobs:
           name: "Build AsciiBinder docs for openshift-enterprise"
       - 
         run: 
-          command: sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt
+          command: "sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt"
           name: "Copy files and ZIP"
-      - persist_to_workspace:
-          root: workspace
+      - 
+        persist_to_workspace: 
           paths: openshift-docs/_preview/
-          
- publish:
+          root: workspace
+  publish: 
     executor: node-executor
-    steps:
-      - attach_workspace:
+    steps: 
+      - 
+        attach_workspace: 
           at: /
-      - run:
+      - 
+        run: 
+          command: "npm install netlify-cli -g"
           name: "Install Netlify CLI"
-          command: npm install netlify-cli -g
-      - run:
+      - 
+        run: 
+          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
           name: "Upload to Netlify"
-          command: netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/
-          
 version: 2.1
-workflows:
-  build_and_publish:
-    jobs:
+workflows: 
+  build_and_publish: 
+    jobs: 
       - build
-      - publish:
+      - 
+        publish: 
           requires: 
             - build
+
