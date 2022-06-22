@@ -17,6 +17,14 @@ jobs:
           name: "Build AsciiBinder docs for openshift-enterprise"
       - 
         run: 
+          command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-rosa\""
+          name: "Build AsciiBinder docs for openshift-rosa"
+      - 
+        run: 
+          command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-dedicated\""
+          name: "Build AsciiBinder docs for openshift-dedicated"
+      - 
+        run: 
           command: "sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt"
           name: "Copy files"
       -
