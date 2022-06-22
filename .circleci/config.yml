@@ -23,7 +23,7 @@ jobs:
       - 
         persist_to_workspace: 
           paths: openshift-docs/_preview/
-          root: workspace
+          root: /
   publish: 
     executor: node-executor
     steps: 
