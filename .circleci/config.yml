@@ -18,18 +18,8 @@ jobs:
       - 
         run: 
           command: "sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt"
-          name: "Copy files and ZIP"
-      - 
-        persist_to_workspace: 
-          paths: _preview/
-          root: .
-  publish: 
-    executor: node-executor
-    steps: 
-      - 
-        attach_workspace: 
-          at: /tmp/_preview/
-      - 
+          name: "Copy files"
+      -
         run: 
           command: "npm install netlify-cli -g"
           name: "Install Netlify CLI"
@@ -42,7 +32,3 @@ workflows:
   build_and_publish: 
     jobs: 
       - build
-      - publish: 
-          requires: 
-            - build
-
