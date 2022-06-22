@@ -25,7 +25,7 @@ jobs:
           name: "Install Netlify CLI"
       - 
         run: 
-          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=/tmp/_preview/"
+          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
           name: "Upload to Netlify"
 
 workflows: 
