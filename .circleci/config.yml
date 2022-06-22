@@ -7,9 +7,13 @@ jobs:
         run: 
           command: "docker pull quay.io/openshift-cs/asciibinder:latest"
           name: "Get AsciiBinder image"
+      -
+        run:
+          command: "chmod +x scripts/push_to_netlify.sh && ./scripts/push_to_netlify.sh"
+          name: "Get PR branch"
       - 
         run: 
-          command: "git branch latest && git checkout latest"
+          command: "git branch -m latest"
           name: "Set Git branch"
       - 
         run: 
