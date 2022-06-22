@@ -6,13 +6,21 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build:
-    docker:
-      - image: cimg/base:2020.01
+    machine: true
     steps:
       - checkout
       - run:
-          name: Run script
-          command: chmod +x scripts/push_to_netlify.sh && ./scripts/push_to_netlify.sh
+          name: Get AsciiBinder image
+          command: docker pull quay.io/openshift-cs/asciibinder:latest
+      - run:
+          name: Set Git branch
+          command: git branch latest && git checkout latest
+      - run: 
+          name: Build AsciiBinder docs for openshift-enterprise
+          command: docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro "openshift-enterprise"
+      - run:|
+          sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt
+          curl -H "Content-Type: application/zip" -H "Authorization: Bearer ${NETLIFY_AUTH_TOKEN}" --data-binary "@preview.zip" https://api.netlify.com/api/v1/sites/ocpdocspreview/deploys
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
