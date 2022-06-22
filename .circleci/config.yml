@@ -38,8 +38,8 @@ jobs:
         run: 
           command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=/tmp/_preview/"
           name: "Upload to Netlify"
-version: 2.1
 workflows: 
+  version: 2.1
   build_and_publish: 
     jobs: 
       - build
