@@ -18,13 +18,29 @@ jobs:
           name: "Build AsciiBinder docs for openshift-enterprise"
       - 
         run: 
-          command: |
-              sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt;
-              sudo zip -r preview.zip _preview/;
-              curl -H "Content-Type: application/zip" -H "Authorization: Bearer ${NETLIFY_AUTH_TOKEN}" --data-binary "@preview.zip" https://api.netlify.com/api/v1/sites/ocpdocspreview/deploys;
-          name: "Copy files, create zip, upload to Netlify"
+          command: sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt
+          name: "Copy files and ZIP"
+      - persist_to_workspace:
+          root: workspace
+          paths: openshift-docs/_preview/
+          
+ publish:
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: /
+      - run:
+          name: "Install Netlify CLI"
+          command: npm install netlify-cli -g
+      - run:
+          name: "Upload to Netlify"
+          command: netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/
+          
 version: 2.1
-workflows: 
-  publish: 
-    jobs: 
+workflows:
+  build_and_publish:
+    jobs:
       - build
+      - publish:
+          requires: 
+            - build
