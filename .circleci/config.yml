@@ -1,34 +1,30 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-jobs:
-  build:
+--- 
+jobs: 
+  build: 
     machine: true
-    steps:
+    steps: 
       - checkout
-      - run:
-          name: Get AsciiBinder image
-          command: docker pull quay.io/openshift-cs/asciibinder:latest
-      - run:
-          name: Set Git branch
-          command: git branch latest && git checkout latest
-      - run: 
-          name: Build AsciiBinder docs for openshift-enterprise
-          command: docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro "openshift-enterprise"
-      - run:
-          name: Copy files, create zip, upload to Netlify
-          command:|
-          sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt;
-          sudo zip -r preview.zip _preview/;
-          curl -H "Content-Type: application/zip" -H "Authorization: Bearer ${NETLIFY_AUTH_TOKEN}" --data-binary "@preview.zip" https://api.netlify.com/api/v1/sites/ocpdocspreview/deploys;
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-workflows:
-  publish: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    jobs:
+      - 
+        run: 
+          command: "docker pull quay.io/openshift-cs/asciibinder:latest"
+          name: "Get AsciiBinder image"
+      - 
+        run: 
+          command: "git branch latest && git checkout latest"
+          name: "Set Git branch"
+      - 
+        run: 
+          command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-enterprise\""
+          name: "Build AsciiBinder docs for openshift-enterprise"
+      - 
+        run: 
+          command: |
+              sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt;
+              sudo zip -r preview.zip _preview/;
+              curl -H "Content-Type: application/zip" -H "Authorization: Bearer ${NETLIFY_AUTH_TOKEN}" --data-binary "@preview.zip" https://api.netlify.com/api/v1/sites/ocpdocspreview/deploys;
+          name: "Copy files, create zip, upload to Netlify"
+version: 2.1
+workflows: 
+  publish: 
+    jobs: 
       - build
