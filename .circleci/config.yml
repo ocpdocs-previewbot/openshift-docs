@@ -23,20 +23,20 @@ jobs:
       - 
         persist_to_workspace: 
           paths: openshift-docs/_preview/
-          root: /
+          root: .
   publish: 
     executor: node-executor
     steps: 
       - 
         attach_workspace: 
-          at: /
+          at: /tmp/_preview/
       - 
         run: 
           command: "npm install netlify-cli -g"
           name: "Install Netlify CLI"
       - 
         run: 
-          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
+          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=/tmp/_preview/"
           name: "Upload to Netlify"
 version: 2.1
 workflows: 
