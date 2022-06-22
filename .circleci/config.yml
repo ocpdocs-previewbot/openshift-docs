@@ -22,7 +22,7 @@ jobs:
           name: "Copy files and ZIP"
       - 
         persist_to_workspace: 
-          paths: /home/circleci/project/openshift-docs/_preview/
+          paths: _preview/
           root: .
   publish: 
     executor: node-executor
