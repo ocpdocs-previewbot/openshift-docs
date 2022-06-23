@@ -41,7 +41,7 @@ jobs:
           name: "Upload to Netlify"
       -
         run:
-          command: "chmod +x scripts/ghcomment.sh && ./scripts/ghcomment.sh"
+          command: "wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/ghcomment.sh && chmod +x ghcomment.sh && ./ghcomment.sh"
           name: "Add comment on PR"
 
 workflows: 
