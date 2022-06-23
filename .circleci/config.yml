@@ -2,15 +2,18 @@ jobs:
   build: 
     machine: true
     steps: 
+      - run:
+          command: '[ -z "$PR_NUMBER" ] && circleci-agent step halt'
+          name: "Check if PR_NUMBER exists"
       - checkout
-      - 
-        run: 
-          command: "docker pull quay.io/openshift-cs/asciibinder:latest"
-          name: "Get AsciiBinder image"
       -
         run:
           command: "chmod +x scripts/push_to_netlify.sh && ./scripts/push_to_netlify.sh"
           name: "Get PR branch"
+      - 
+        run: 
+          command: "docker pull quay.io/openshift-cs/asciibinder:latest"
+          name: "Get AsciiBinder image"
       - 
         run: 
           command: "git branch -m latest"
@@ -39,6 +42,10 @@ jobs:
         run: 
           command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
           name: "Upload to Netlify"
+      -
+        run:
+          command: "chmod +x scripts/ghcomment.sh && ./scripts/ghcomment.sh"
+          name: "Add comment on PR"
 
 workflows: 
   build_and_publish: 
