@@ -1,10 +1,7 @@
 jobs: 
   build: 
     machine: true
-    steps: 
-      - run:
-          command: '[ -z "$PR_NUMBER" ] && circleci-agent step halt'
-          name: "Check if PR_NUMBER exists"
+    steps:
       - checkout
       -
         run:
