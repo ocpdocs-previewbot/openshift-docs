@@ -1,6 +1,7 @@
 jobs:
   build:
     machine: true
+    resource_class: medium
     steps:
       - checkout
       -
