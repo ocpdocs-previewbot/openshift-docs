@@ -1,5 +1,5 @@
-jobs: 
-  build: 
+jobs:
+  build:
     machine: true
     steps:
       - checkout
@@ -7,44 +7,44 @@ jobs:
         run:
           command: "chmod +x scripts/push_to_netlify.sh && ./scripts/push_to_netlify.sh"
           name: "Get PR branch"
-      - 
-        run: 
+      -
+        run:
           command: "docker pull quay.io/openshift-cs/asciibinder:latest"
           name: "Get AsciiBinder image"
-      - 
-        run: 
+      -
+        run:
           command: "git branch -m latest"
           name: "Set Git branch"
-      - 
-        run: 
+      -
+        run:
           command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-enterprise\""
           name: "Build AsciiBinder docs for openshift-enterprise"
-      - 
-        run: 
+      -
+        run:
           command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-rosa\""
           name: "Build AsciiBinder docs for openshift-rosa"
-      - 
-        run: 
+      -
+        run:
           command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-dedicated\""
           name: "Build AsciiBinder docs for openshift-dedicated"
-      - 
-        run: 
+      -
+        run:
           command: "sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt"
           name: "Copy files"
-      -
-        run: 
-          command: "npm install netlify-cli -g"
-          name: "Install Netlify CLI"
-      - 
-        run: 
-          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
-          name: "Upload to Netlify"
       -
         run:
           command: "wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/ghcomment.sh && chmod +x ghcomment.sh && ./ghcomment.sh"
           name: "Add comment on PR"
+      -
+        run:
+          command: "npm install netlify-cli -g"
+          name: "Install Netlify CLI"
+      -
+        run:
+          command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
+          name: "Upload to Netlify"
 
-workflows: 
-  build_and_publish: 
-    jobs: 
+workflows:
+  build_and_publish:
+    jobs:
       - build
