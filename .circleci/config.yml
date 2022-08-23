@@ -30,7 +30,7 @@ jobs:
           name: "Build AsciiBinder docs for openshift-dedicated"
       -
         run:
-          command: "sudo cp -v scripts/ocpdocs/_previewpage _preview/index.html && sudo cp -v scripts/ocpdocs/robots_preview.txt _preview/robots.txt"
+          command: "wget -O _preview/index.html https://raw.githubusercontent.com/openshift/openshift-docs/main/scripts/ocpdocs/_previewpage && wget -O _preview/robots.txt https://raw.githubusercontent.com/openshift/openshift-docs/main/scripts/ocpdocs/robots_preview.txt"
           name: "Copy files"
       -
         run:
