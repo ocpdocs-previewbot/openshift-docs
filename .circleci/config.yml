@@ -18,7 +18,7 @@ jobs:
           name: "Set Git branch"
       -
         run:
-          command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build"
+          command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-enterprise\""
           name: "Build AsciiBinder docs for openshift-enterprise"
       -
         run:
