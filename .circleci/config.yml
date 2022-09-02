@@ -17,9 +17,12 @@ jobs:
           command: "git branch -m latest"
           name: "Set Git branch"
       -
-        run:
-          command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-enterprise\""
-          name: "Build AsciiBinder docs for openshift-enterprise"
+        run: |
+          if [[ "${BASE_REF}" == rhacs-docs* || "${BASE_REF}" == opp-docs* ]]; then
+            docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build
+          else
+            docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-enterprise\"
+          fi
       -
         run:
           command: "docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build --distro \"openshift-rosa\""
