@@ -18,6 +18,7 @@ jobs:
           name: "Set Git branch"
       -
         run: |
+          echo "Running asciibinder build"
           if [[ "${BASE_REF}" == rhacs-docs* || "${BASE_REF}" == opp-docs* ]]; then
             docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build
           else
