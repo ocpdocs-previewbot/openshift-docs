@@ -3,7 +3,10 @@ jobs:
     machine: true
     resource_class: medium
     steps:
-      - checkout
+      - 
+        run:
+          command: "git clone --depth 1 https://github.com/ocpdocs-previewbot/openshift-docs.git --branch main"
+          name: "Checkout code"
       -
         run:
           command: "chmod +x scripts/push_to_netlify.sh && ./scripts/push_to_netlify.sh"
