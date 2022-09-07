@@ -5,7 +5,7 @@ jobs:
     steps:
       - 
         run:
-          command: "git clone --depth 1 https://github.com/ocpdocs-previewbot/openshift-docs.git --branch main"
+          command: "git clone --depth 1 https://github.com/ocpdocs-previewbot/openshift-docs.git --branch main && cd openshift-docs"
           name: "Checkout code"
       -
         run:
