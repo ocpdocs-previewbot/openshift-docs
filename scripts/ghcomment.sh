@@ -21,7 +21,7 @@ if curl --output /dev/null --silent --head --fail "$PREVIEW_URL"; then
 fi
 
 if [[ "$NEW_PR" = true ]]; then
-    COMMENT_DATA="🤖 Bots are busy building the preview. It will be available soon at: \n ${PREVIEW_URL}"
+    COMMENT_DATA="🤖 Bots are busy building the preview. It will be available soon at: \n ${PREVIEW_URL} \n \n Build log: ${CIRCLE_BUILD_URL}"
     echo -e "${YELLOW}ADDING COMMENT on PR${NC}"
     echo -e "${BLUE}COMMENT DATA:${NC}$COMMENT_DATA"
     curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${GH_TOKEN}" -X POST -d "{\"body\": \"${COMMENT_DATA}\"}" "https://api.github.com/repos/openshift/openshift-docs/issues/${PR_NUMBER}/comments" > /dev/null 2>&1
