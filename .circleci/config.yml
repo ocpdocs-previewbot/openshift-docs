@@ -40,17 +40,21 @@ jobs:
           name: "Copy files"
       -
         run:
-          command: "wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/ghcomment.sh && chmod +x ghcomment.sh && ./ghcomment.sh"
-          name: "Add comment on PR"
-      -
-        run:
           command: "npm install netlify-cli -g"
           name: "Install Netlify CLI"
       -
         run:
           command: "netlify deploy --site docspreview --auth $NETLIFY_AUTH_TOKEN --alias $PR_NUMBER --dir=_preview/"
           name: "Upload to Netlify"
+      - jq/install
+      -
+        run:
+          command: "wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/ghcomment.sh && chmod +x ghcomment.sh && ./ghcomment.sh"
+          name: "Add comment on PR"
 
+orbs:
+  jq: circleci/jq@2.2.0
+version: 2.1
 workflows:
   build_and_publish:
     jobs:
