@@ -8,23 +8,33 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 
 PREVIEW_URL=https://${PR_NUMBER}--docspreview.netlify.app
-NEW_PR=''
 
-echo -e "${YELLOW}==== CHECKING PREVIEW BUILD COMMENTS ====${NC}"
-# Check if netlify site exists, if it doesn't that means either the build failed or the this is a new PR
-if curl --output /dev/null --silent --head --fail "$PREVIEW_URL"; then
-    echo -e "${GREEN}PR exists. No new comment on the PR.${NC}"
-    NEW_PR=false
-    else
-    echo -e "${GREEN}PR does not exist. Add a new comment on the PR.${NC}"
-    NEW_PR=true
-fi
-
-if [[ "$NEW_PR" = true ]]; then
-    COMMENT_DATA="🤖 Bots are busy building the preview. It will be available soon at: \n ${PREVIEW_URL} \n \n Build log: ${CIRCLE_BUILD_URL}"
+add_new_comment () {
+    COMMENT_DATA="🤖 Build preview is available at: \n ${PREVIEW_URL} \n \n Build log: ${CIRCLE_BUILD_URL}"
     echo -e "${YELLOW}ADDING COMMENT on PR${NC}"
     echo -e "${BLUE}COMMENT DATA:${NC}$COMMENT_DATA"
-    curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${GH_TOKEN}" -X POST -d "{\"body\": \"${COMMENT_DATA}\"}" "https://api.github.com/repos/openshift/openshift-docs/issues/${PR_NUMBER}/comments" > /dev/null 2>&1
+    curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" -X POST -d "{\"body\": \"${COMMENT_DATA}\"}" "https://api.github.com/repos/openshift/openshift-docs/issues/${PR_NUMBER}/comments" > /dev/null 2>&1
+}
+
+update_existing_comment () {
+    COMMENT_DATA="🤖 Updated build preview is available at: \n ${PREVIEW_URL} \n \n Build log: ${CIRCLE_BUILD_URL}"
+    echo -e "${YELLOW}ADDING COMMENT on PR${NC}"
+    echo -e "${BLUE}COMMENT DATA:${NC}$COMMENT_DATA"
+    curl -X PATCH -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" "https://api.github.com/repos/openshift/openshift-docs/issues/comments/${GH_COMMENT_ID}" -d "{\"body\": \"${COMMENT_DATA}\"}" > /dev/null 2>&1
+}
+
+echo -e "$YELLOW==== FINDING EXISTING COMMENTS ====${NC}"
+COMMENTS_JSON=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" "https://api.github.com/repos/openshift/openshift-docs/issues/${PR_NUMBER}/comments" | jq '.')
+GH_COMMENT_ID=$(echo "${COMMENTS_JSON}" | tr '\r\n' ' ' | jq '.[] | select(.user.login=="ocpdocs-previewbot")| .id')
+
+if [ "${GH_COMMENT_ID}" = "null" ]; then
+    # New PR, no existing comments from bot
+    echo -e "${GREEN} New PR, no existing comments from bot. Adding a new comment ...${NC}"
+    add_new_comment
+else
+    # Bot comments exist, update the comment
+    echo -e "${GREEN} Existing PR, Updating bot comment ...${NC}"
+    update_existing_comment
 fi
 
-echo -e "${GREEN}DONE!${NC}"
+echo -e "${GREEN}✓ DONE!${NC}"
