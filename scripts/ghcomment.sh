@@ -27,8 +27,9 @@ echo -e "$YELLOW==== FINDING EXISTING COMMENTS ====${NC}"
 COMMENTS_JSON=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" "https://api.github.com/repos/openshift/openshift-docs/issues/${PR_NUMBER}/comments" | jq '.')
 GH_COMMENT_ID=$(echo "${COMMENTS_JSON}" | tr '\r\n' ' ' | jq '.[] | select(.user.login=="ocpdocs-previewbot")| .id')
 
-if [ "${GH_COMMENT_ID}" = "null" ]; then
-    # New PR, no existing comments from bot
+re='^[0-9]+$'
+if ! [[ $GH_COMMENT_ID =~ $re ]]; then
+    # Commend ID isin't a number. New PR, no existing comments from bot
     echo -e "${GREEN} New PR, no existing comments from bot. Adding a new comment ...${NC}"
     add_new_comment
 else
