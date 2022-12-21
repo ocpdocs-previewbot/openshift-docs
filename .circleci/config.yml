@@ -55,34 +55,6 @@ jobs:
         run:
           command: "wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/ghcomment.sh && chmod +x ghcomment.sh && ./ghcomment.sh"
           name: "Add comment on PR"
-      -
-        run:
-          command: "wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/vale_error_comments.sh && chmod +x vale_error_comments.sh && ./vale_error_comments.sh"
-          name: "Vale errors (modified lines only)"
-
-  vale_check:
-    docker:
-      - image: cimg/ruby:3.0.5
-    steps:
-      - checkout
-      - run:
-          name: Install asciidoctor
-          command: gem install asciidoctor
-      - run:
-          name: Install Vale
-          command: |
-            wget https://github.com/errata-ai/vale/releases/download/v2.20.1/vale_2.20.1_Linux_64-bit.tar.gz
-            tar -xvzf vale_2.20.1_Linux_64-bit.tar.gz -C $HOME/bin/
-            echo $PATH
-      - run:
-          name: Sync Vale rules
-          command: vale sync
-      - run:
-          name: Download and run vale_error_comments.sh
-          command: |
-            wget https://raw.githubusercontent.com/ocpdocs-previewbot/openshift-docs/main/scripts/vale_error_comments.sh
-            chmod +x vale_error_comments.sh
-            ./vale_error_comments.sh
 
 orbs:
   jq: circleci/jq@2.2.0
@@ -91,6 +63,3 @@ workflows:
   build_and_publish:
     jobs:
       - build
-      - vale_check:
-          requires:
-          - build
