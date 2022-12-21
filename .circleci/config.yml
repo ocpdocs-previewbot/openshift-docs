@@ -72,8 +72,7 @@ jobs:
           name: Install Vale
           command: |
             wget https://github.com/errata-ai/vale/releases/download/v2.20.1/vale_2.20.1_Linux_64-bit.tar.gz
-            mkdir bin && tar -xvzf vale_2.20.1_Linux_64-bit.tar.gz -C bin
-            export PATH=./bin:$PATH
+            tar -xvzf vale_2.20.1_Linux_64-bit.tar.gz -C /bin/
       - run:
           name: Sync Vale rules
           command: vale sync
