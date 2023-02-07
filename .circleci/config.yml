@@ -19,7 +19,7 @@ jobs:
       -
         run: |
           echo "Running asciibinder build for base reference: ${BASE_REF}"
-          if [[ "${BASE_REF}" == rhacs-docs* || "${BASE_REF}" == opp-docs* ]]; then
+          if [[ "${BASE_REF}" == rhacs-docs* || "${BASE_REF}" == opp-docs* || "${BASE_REF}" == rhde-docs* ]]; then
             echo "Running generic Asciibinder build"
             docker run --rm -it -u `id -u` -v `pwd`:/docs:Z quay.io/openshift-cs/asciibinder asciibinder build
           else
